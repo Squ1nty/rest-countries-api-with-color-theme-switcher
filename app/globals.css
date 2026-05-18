@@ -3,24 +3,18 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  --blue-900: hsl(209, 23%, 22%);   /* Dark Mode Elements */
+  --blue-950: hsl(207, 26%, 17%);   /* Dark Mode Background */
+  --grey-950: hsl(200, 15%, 8%);    /* Light Mode Text */
+  --grey-400: hsl(0, 0%, 50%);      /* Light Mode Input */
+  --grey-50: hsl(0, 0%, 99%);       /* Light Mode Background */
+                                      /* White is used for Dark Mode Text and Light Mode Elements */
+
+  --homepage-font-size: 0.875rem;
+  --detail-page-font-size: 1rem;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@theme {
+  --font-sans: var(--font-nunito-sans);
 }
