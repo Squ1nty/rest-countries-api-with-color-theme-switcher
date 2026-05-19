@@ -1,9 +1,6 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-
   --blue-900: hsl(209, 23%, 22%);   /* Dark Mode Elements */
   --blue-950: hsl(207, 26%, 17%);   /* Dark Mode Background */
   --grey-950: hsl(200, 15%, 8%);    /* Light Mode Text */
