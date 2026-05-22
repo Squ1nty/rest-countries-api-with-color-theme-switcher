@@ -1,7 +1,7 @@
 "use client";
 
-import { useTheme } from "../contextFiles/ThemeContext";
 import { useEffect, useState } from "react";
+import { useTheme } from "../contextFiles/ThemeContext";
 
 interface Country {
   name: {
@@ -17,12 +17,16 @@ interface Country {
   };
 }
 
+interface CountryGridProps {
+  search: string;
+  region: string;
+}
+
 function CountryCard({ country }: { country: Country }) {
   const { theme } = useTheme();
 
   return (
-    <div className={`rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 cursor-pointer ${theme === 'dark' ? 'bg-[var(--blue-900)]' : 'bg-white'}`}>
-      {/* Flag */}
+    <div className={`rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 cursor-pointer ${theme === 'dark' ? 'bg-[var(--blue-900)] text-white' : 'bg-white text-[var(--blue-950)]'}`}>
       <div className="w-full h-44 overflow-hidden">
         <img
           src={country.flags?.svg || country.flags?.png}
@@ -30,22 +34,20 @@ function CountryCard({ country }: { country: Country }) {
           className="w-full h-full object-cover"
         />
       </div>
-
-      {/* Info */}
       <div className="p-6 pb-8">
-        <h2 className={`font-extrabold text-lg mb-3 ${theme === 'dark' ? 'text-white' : 'text-[var(--grey-950)]'}`}>
+        <h2 className="font-extrabold text-lg mb-3">
           {country.name.common}
         </h2>
-        <div className={`space-y-1 text-sm ${theme === 'dark' ? 'text-[var(--grey-400)]' : 'text-[var(--blue-950)]'}`}>
+        <div className="space-y-1 text-sm">
           <p>
-            <span className={`font-bold ${theme === 'dark' ? 'text-[var(--grey-50)]' : null}`}>Population:</span>{" "}
+            <span className="font-semibold">Population:</span>{" "}
             {country.population.toLocaleString()}
           </p>
           <p>
-            <span className={`font-bold ${theme === 'dark' ? 'text-[var(--grey-50)]' : null}`}>Region:</span> {country.region}
+            <span className="font-semibold">Region:</span> {country.region}
           </p>
           <p>
-            <span className={`font-bold ${theme === 'dark' ? 'text-[var(--grey-50)]' : null}`}>Capital:</span>{" "}
+            <span className="font-semibold">Capital:</span>{" "}
             {country.capital?.[0] ?? "N/A"}
           </p>
         </div>
@@ -54,7 +56,8 @@ function CountryCard({ country }: { country: Country }) {
   );
 }
 
-export default function CountryGrid() {
+export default function CountryGrid({ search, region }: CountryGridProps) {
+  const { theme } = useTheme();
   const [countries, setCountries] = useState<Country[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -75,10 +78,16 @@ export default function CountryGrid() {
       });
   }, []);
 
+  const filtered = countries.filter((country) => {
+    const matchesSearch = country.name.common.toLowerCase().includes(search.toLowerCase());
+    const matchesRegion = region ? country.region === region : true;
+    return matchesSearch && matchesRegion;
+  });
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-64">
-        <p className="text-gray-500 text-lg">Loading countries...</p>
+        <p className={`text-lg ${theme === 'dark' ? 'text-white' : 'text-gray-500'}`}>Loading countries...</p>
       </div>
     );
   }
@@ -91,9 +100,17 @@ export default function CountryGrid() {
     );
   }
 
+  if (filtered.length === 0) {
+    return (
+      <div className="flex items-center justify-center min-h-64">
+        <p className={`text-lg ${theme === 'dark' ? 'text-white' : 'text-gray-500'}`}>No countries found.</p>
+      </div>
+    );
+  }
+
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 p-8">
-      {countries.map((country) => (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 py-8">
+      {filtered.map((country) => (
         <CountryCard key={country.name.common} country={country} />
       ))}
     </div>
