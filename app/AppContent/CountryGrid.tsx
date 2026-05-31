@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useTheme } from "../contextFiles/ThemeContext";
+import Link from "next/link";
 
 interface Country {
   name: {
@@ -26,33 +27,35 @@ function CountryCard({ country }: { country: Country }) {
   const { theme } = useTheme();
 
   return (
-    <div className={`rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 cursor-pointer ${theme === 'dark' ? 'bg-[var(--blue-900)] text-white' : 'bg-white text-[var(--blue-950)]'}`}>
-      <div className="w-full h-44 overflow-hidden">
-        <img
-          src={country.flags?.svg || country.flags?.png}
-          alt={`Flag of ${country.name.common}`}
-          className="w-full h-full object-cover"
-        />
-      </div>
-      <div className="p-6 pb-8">
-        <h2 className="font-extrabold text-lg mb-3">
-          {country.name.common}
-        </h2>
-        <div className="space-y-1 text-sm">
-          <p>
-            <span className="font-semibold">Population:</span>{" "}
-            {country.population.toLocaleString()}
-          </p>
-          <p>
-            <span className="font-semibold">Region:</span> {country.region}
-          </p>
-          <p>
-            <span className="font-semibold">Capital:</span>{" "}
-            {country.capital?.[0] ?? "N/A"}
-          </p>
+    <Link href={`/countries/${country.name.common}`}>
+      <div className={`rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 cursor-pointer ${theme === 'dark' ? 'bg-[var(--blue-900)] text-white' : 'bg-white text-[var(--blue-950)]'}`}>
+        <div className="w-full h-44 overflow-hidden">
+          <img
+            src={country.flags?.svg || country.flags?.png}
+            alt={`Flag of ${country.name.common}`}
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <div className="p-6 pb-8">
+          <h2 className="font-extrabold text-lg mb-3">
+            {country.name.common}
+          </h2>
+          <div className="space-y-1 text-sm">
+            <p>
+              <span className="font-semibold">Population:</span>{" "}
+              {country.population.toLocaleString()}
+            </p>
+            <p>
+              <span className="font-semibold">Region:</span> {country.region}
+            </p>
+            <p>
+              <span className="font-semibold">Capital:</span>{" "}
+              {country.capital?.[0] ?? "N/A"}
+            </p>
+          </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
 
