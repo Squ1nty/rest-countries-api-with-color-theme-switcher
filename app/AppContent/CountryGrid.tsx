@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useTheme } from "../contextFiles/ThemeContext";
 import Link from "next/link";
 
-interface Country {
+export interface Country {
   name: {
     common: string;
     official: string;
@@ -18,7 +18,18 @@ interface Country {
   };
 }
 
-interface CountryGridProps {
+export interface CountryDetail extends Country {
+  name: Country['name'] & {
+    nativeName: Record<string, { common: string }>
+  }
+  subregion?: string
+  tld?: string[]
+  currencies?: Record<string, { name: string }>
+  languages?: Record<string, string>
+  borders?: string[]
+}
+
+export interface CountryGridProps {
   search: string;
   region: string;
 }
