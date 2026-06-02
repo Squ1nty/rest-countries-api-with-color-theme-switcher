@@ -14,4 +14,5 @@
 
 @theme {
   --font-sans: var(--font-nunito-sans);
+  --detail-page-layout: auto 1fr;
 }

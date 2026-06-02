@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import type { CountryDetail } from '../../AppContent/CountryGrid'
 import CountryDetailClient from './CountryDetailClient'
+import Header from '@/app/AppContent/Header'
 
 async function getCountry(name: string): Promise<CountryDetail> {
   const decoded = decodeURIComponent(name)
@@ -29,5 +30,10 @@ export default async function CountryPage({
   const country = await getCountry(name)
   const borderNames = await getBorderCountryNames(country.borders ?? [])
 
-  return <CountryDetailClient country={country} borderNames={borderNames} />
+  return(
+    <>
+      <Header></Header>
+      <CountryDetailClient country={country} borderNames={borderNames} />
+    </>
+  );
 }
