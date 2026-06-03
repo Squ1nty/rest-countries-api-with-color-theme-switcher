@@ -7,9 +7,9 @@ export default function Header(){
   const { theme, toggleTheme } = useTheme();
 
   return(
-  <header className={`w-full sticky top-0 px-4 py-6 shadow-md flex space-between items-center justify-between ${theme === 'dark' ? 'bg-[var(--blue-900)] text-white' : 'bg-white text-[var(--blue-950)]'}`}>
+  <header className={`w-full sticky top-0 px-4 py-6 shadow-md flex space-between items-center justify-between ${theme === 'dark' ? 'bg-[var(--blue-900)] text-white' : 'bg-white text-[var(--blue-950)]'} z-10 `}>
     <div className="container w-fit"> {/* Actual heading location */}
-      <h1 className="font-bold "><a href='/'>Where in the world?</a></h1>
+      <h1 className="font-bold"><a href='/'>Where in the world?</a></h1>
     </div>
     <button className={`flex items-center gap-2 p-2 rounded-lg ${theme === 'dark' ? 'hover:bg-gray-600' : 'hover:bg-gray-200'} transition-colors duration-150 cursor-pointer`} onClick={toggleTheme}> {/* Theme toggle location */}
       <svg xmlns="http://www.w3.org/2000/svg" className={`ionicon w-5 h-5 ${theme === 'dark' ? 'text-white' : 'text-[var(--blue-950)]'}`} viewBox="0 0 512 512" >

@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useTheme } from '../../contextFiles/ThemeContext'
 import type { CountryDetail } from '../../AppContent/CountryGrid'
+import { useEffect } from 'react'
 
 type Props = {
   country: CountryDetail
@@ -17,6 +18,11 @@ export default function CountryDetailClient({ country, borderNames }: Props) {
   const currencies = Object.values(country.currencies ?? {}).map(c => c.name).join(', ') || 'N/A'
   const languages = Object.values(country.languages ?? {}).join(', ') || 'N/A'
   const tld = country.tld?.[0] ?? 'N/A'
+
+  useEffect(() => {
+    // Scroll instantly to top-left corner on layout mount
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div className={`min-h-screen px-8 py-12 md:px-20 md:grid md:grid-rows-[var(--detail-page-layout)] md:gap-12 ${dark ? 'bg-[var(--blue-950)] text-white' : 'bg-[var(--blue-50)] text-[var(--blue-950)]'}`}>
