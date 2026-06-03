@@ -14,7 +14,7 @@ export default function AppContent() {
   return(
     <div className={`w-full min-h-svh flex flex-col gap-2 ${theme === 'dark' ? 'bg-[var(--blue-950)]' : 'bg-[var(--grey-50)]'}`}>
       <Header />
-      <main className='flex flex-col p-4'>
+      <main className='flex flex-col p-4 max-w-[1280px] mx-auto w-full'>
         <QueryComponents
           search={search}
           setSearch={setSearch}
