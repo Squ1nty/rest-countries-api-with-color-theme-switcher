@@ -23,12 +23,16 @@ function QueryComponents({ search, setSearch, region, setRegion }: QueryComponen
           <path fill="none" stroke="currentColor" strokeLinecap="round" strokeMiterlimit="10" strokeWidth="32" d="M338.29 338.29L448 448"/>
         </svg>
         <input
+          id='search'
           className={`w-full h-fit py-4 px-2 ${theme === 'dark' ? 'bg-[var(--blue-900)] text-white placeholder:text-white' : 'bg-white text-[var(--blue-950)] placeholder:text-[var(--blue-500)]'} outline-none`}
           placeholder="Search for a country..."
           type='text'
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
+        <label htmlFor='search' className='sr-only'>
+          Search for a country...
+        </label>
       </div>
 
       {/* Region Filter */}
