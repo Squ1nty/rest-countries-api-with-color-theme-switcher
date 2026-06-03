@@ -29,7 +29,7 @@ export default function CountryDetailClient({ country, borderNames }: Props) {
 
       {/* Back Button */}
       <Link className="w-fit flex items-center" href="/">
-        <button className={`flex items-center gap-2 px-8 py-2 shadow-md rounded-md text-sm ${dark ? 'bg-[var(--blue-900)] text-white' : 'bg-white text-[var(--blue-950)]'} cursor-pointer`}>
+        <button className={`flex items-center gap-2 px-8 py-2 shadow-md rounded-md text-sm ${dark ? 'bg-[var(--blue-900)] text-white' : 'bg-white text-[var(--blue-950)]'} cursor-pointer hover:translate-y-[-2px] hover:shadow-lg transition-all duration-300`}>
           ← Back
         </button>
       </Link>
@@ -70,13 +70,13 @@ export default function CountryDetailClient({ country, borderNames }: Props) {
 
           {/* Border Countries */}
           {borderNames.length > 0 && (
-            <div className="flex flex-wrap items-center gap-3">
+            <div className="flex flex-wrap items-center justify-center gap-3">
               <span className="font-bold text-sm">Border Countries:</span>
               {borderNames.map(name => (
                 <Link
                   key={name}
                   href={`/countries/${name}`}
-                  className={`px-6 py-1 text-sm shadow-md rounded-sm ${dark ? 'bg-[var(--blue-900)] text-white' : 'bg-white text-[var(--blue-950)]'}`}
+                  className={`px-6 py-2 text-sm shadow-md rounded-sm ${dark ? 'bg-[var(--blue-900)] text-white' : 'bg-white text-[var(--blue-950)]'} hover:translate-y-[-4px] hover:shadow-lg transition-all duration-300`}
                 >
                   {name}
                 </Link>
