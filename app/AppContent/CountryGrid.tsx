@@ -83,7 +83,7 @@ export default function CountryGrid({ search, region }: CountryGridProps) {
         return res.json();
       })
       .then((data: Country[]) => {
-        setCountries(data);
+        setCountries(data.sort((a, b) => a.name.common.localeCompare(b.name.common)));
         setLoading(false);
       })
       .catch((err: Error) => {
