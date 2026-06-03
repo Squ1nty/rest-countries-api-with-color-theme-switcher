@@ -38,7 +38,7 @@ function CountryCard({ country }: { country: Country }) {
   const { theme } = useTheme();
 
   return (
-    <Link href={`/countries/${country.name.common}`}>
+    <Link href={`/countries/${country.name.common}`} className={`hover:transition-tranform hover:translate-y-[-6px] shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer`}>
       <div className={`rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 cursor-pointer ${theme === 'dark' ? 'bg-[var(--blue-900)] text-white' : 'bg-white text-[var(--blue-950)]'}`}>
         <div className="w-full h-44 overflow-hidden">
           <img
