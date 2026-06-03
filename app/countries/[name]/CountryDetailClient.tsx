@@ -32,7 +32,7 @@ export default function CountryDetailClient({ country, borderNames }: Props) {
       <div className="flex flex-col md:flex-row md:items-center gap-12 md:gap-24 md:mb-24">
 
         {/* Flag */}
-        <div className="w-full md:w-1/2">
+        <div className={`w-full md:w-1/2 ${dark ? null : 'shadow-md'}`}>
           <img
             src={country.flags?.svg || country.flags?.png}
             alt={`Flag of ${country.name.common}`}
