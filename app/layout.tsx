@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Nunito_Sans } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "./contextFiles/ThemeContext";
+import { HistoryProvider } from "./contextFiles/HistoryContext";
 
 const nunitoSans = Nunito_Sans({
   variable: "--font-nunito-sans",
@@ -18,7 +19,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="en" className={`${nunitoSans.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
         <ThemeProvider>
-          {children}
+          <HistoryProvider>
+            {children}
+          </HistoryProvider>
         </ThemeProvider>
       </body>
     </html>

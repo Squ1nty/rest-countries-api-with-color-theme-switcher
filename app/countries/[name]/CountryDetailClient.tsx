@@ -1,6 +1,8 @@
 'use client'
 
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { useHistory } from '../../contextFiles/HistoryContext'
 import { useTheme } from '../../contextFiles/ThemeContext'
 import type { CountryDetail } from '../../AppContent/CountryGrid'
 import { useEffect } from 'react'
@@ -12,12 +14,29 @@ type Props = {
 
 export default function CountryDetailClient({ country, borderNames }: Props) {
   const { theme } = useTheme()
+  const router = useRouter()
+  const { push, pop, peek, hasHistory } = useHistory()
   const dark = theme === 'dark'
 
   const nativeName = Object.values(country.name.nativeName ?? {})[0]?.common ?? 'N/A'
   const currencies = Object.values(country.currencies ?? {}).map(c => c.name).join(', ') || 'N/A'
   const languages = Object.values(country.languages ?? {}).join(', ') || 'N/A'
   const tld = country.tld?.[0] ?? 'N/A'
+
+  const handleBack = () => {
+    if (hasHistory) {
+      pop()
+      const previous = peek()
+      previous ? router.push(`/countries/${previous}`) : router.push('/')
+    } else {
+      router.push('/')
+    }
+  }
+
+  const handleBorderClick = (name: string) => {
+    push(country.name.common)  // remember where we are before leaving
+    router.push(`/countries/${name}`)
+  }
 
   useEffect(() => {
     // Scroll instantly to top-left corner on layout mount
@@ -28,11 +47,11 @@ export default function CountryDetailClient({ country, borderNames }: Props) {
     <div className={`min-h-screen px-8 py-12 md:px-20 md:grid md:grid-rows-[var(--detail-page-layout)] md:gap-12 ${dark ? 'bg-[var(--blue-950)] text-white' : 'bg-[var(--blue-50)] text-[var(--blue-950)]'}`}>
 
       {/* Back Button */}
-      <Link className="w-fit flex items-center" href="/">
-        <button className={`flex items-center gap-2 px-8 py-2 shadow-md rounded-md text-sm ${dark ? 'bg-[var(--blue-900)] text-white' : 'bg-white text-[var(--blue-950)]'} cursor-pointer hover:translate-y-[-2px] hover:shadow-lg transition-all duration-300`}>
+      <span className="w-fit flex items-center">
+        <button className={`flex items-center gap-2 px-8 py-2 shadow-md rounded-md text-sm ${dark ? 'bg-[var(--blue-900)] text-white' : 'bg-white text-[var(--blue-950)]'} cursor-pointer hover:translate-y-[-2px] hover:shadow-lg transition-all duration-300`} onClick={handleBack}>
           ← Back
         </button>
-      </Link>
+      </span>
 
       {/* Main content */}
       <div className="flex flex-col md:flex-row md:items-center gap-12 md:gap-24 md:mb-24">
@@ -73,13 +92,16 @@ export default function CountryDetailClient({ country, borderNames }: Props) {
             <div className="flex flex-wrap items-center justify-center gap-3">
               <span className="font-bold text-sm">Border Countries:</span>
               {borderNames.map(name => (
-                <Link
+                <button
                   key={name}
-                  href={`/countries/${name}`}
-                  className={`px-6 py-2 text-sm shadow-md rounded-sm ${dark ? 'bg-[var(--blue-900)] text-white' : 'bg-white text-[var(--blue-950)]'} hover:translate-y-[-4px] hover:shadow-lg transition-all duration-300`}
+                  className={`px-6 py-2 text-sm shadow-md rounded-sm ${dark ? 'bg-[var(--blue-900)] text-white' : 'bg-white text-[var(--blue-950)]'} hover:translate-y-[-4px] hover:shadow-lg transition-all duration-300 cursor-pointer`}
+                  onClick={(e) => {
+                    e.preventDefault()
+                    handleBorderClick(name)
+                  }}
                 >
                   {name}
-                </Link>
+                </button>
               ))}
             </div>
           )}
