@@ -6,7 +6,7 @@ import { useTheme } from "../contextFiles/ThemeContext";
 import QueryComponents from "./QueryComponents";
 import CountryGrid from "./CountryGrid";
  
-export default function AppContent() {
+export default function AppContent({ countries }: { countries: any }) {
   const { theme } = useTheme();
   const [search, setSearch] = useState('');
   const [region, setRegion] = useState('');
@@ -21,7 +21,7 @@ export default function AppContent() {
           region={region}
           setRegion={setRegion}
         />
-        <CountryGrid search={search} region={region} />
+        <CountryGrid search={search} region={region} countries={countries} />
       </main>
     </div>
   );
