@@ -16,6 +16,7 @@ export interface Country {
     svg: string;
     png: string;
   };
+  cca3?: string;
 }
 
 export interface CountryDetail extends Country {
@@ -70,49 +71,14 @@ function CountryCard({ country }: { country: Country }) {
   );
 }
 
-export default function CountryGrid({ search, region }: CountryGridProps) {
+export default function CountryGrid({ search, region, countries }: CountryGridProps & { countries: Country[] }) {
   const { theme } = useTheme();
-  const [countries, setCountries] = useState<Country[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    fetch("https://restcountries.com/v3.1/all?fields=name,population,region,capital,flags")
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to fetch countries");
-        return res.json();
-      })
-      .then((data: Country[]) => {
-        setCountries(data.sort((a, b) => a.name.common.localeCompare(b.name.common)));
-        setLoading(false);
-      })
-      .catch((err: Error) => {
-        setError(err.message);
-        setLoading(false);
-      });
-  }, []);
 
   const filtered = countries.filter((country) => {
     const matchesSearch = country.name.common.toLowerCase().includes(search.toLowerCase());
     const matchesRegion = region ? country.region === region : true;
     return matchesSearch && matchesRegion;
   });
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-64">
-        <p className={`text-lg ${theme === 'dark' ? 'text-white' : 'text-gray-500'}`}>Loading countries...</p>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="flex items-center justify-center min-h-64">
-        <p className="text-red-500 text-lg">Error: {error}</p>
-      </div>
-    );
-  }
 
   if (filtered.length === 0) {
     return (
