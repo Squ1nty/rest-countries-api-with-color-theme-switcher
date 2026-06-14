@@ -24,11 +24,10 @@ async function getCountries(): Promise<Country[]> {
 
   // Combine all batches, flatten data.objects arrays
   const allObjects = results.flatMap(r => r.data.objects);
-  console.log('raw object sample:', JSON.stringify(allObjects[0]));
   // Transform flat dot-notation keys into nested Country shape
   return allObjects
             .filter((obj: any) => obj.flag?.url_svg || obj.flag?.url_png)
-            .map((obj: any): Country => ({
+            .map((obj: any): Country => ({ 
     name: {
       common: obj.names?.common,
       official: obj.names?.official,
@@ -46,7 +45,5 @@ async function getCountries(): Promise<Country[]> {
 
 export default async function Home() {
   const countries = await getCountries();
-  console.log('countries type:', typeof countries, 'isArray:', Array.isArray(countries), 'length:', countries?.length);
-  console.log('first item:', JSON.stringify(countries?.[0]));
   return <AppContent countries={countries} />;
 }

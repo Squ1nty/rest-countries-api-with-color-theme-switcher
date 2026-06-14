@@ -8,6 +8,7 @@ const BASE = "https://api.restcountries.com/countries/v5"
 const FIELDS = "names.common,names.official,names.native,population,region,subregion,capitals,flag.url_svg,flag.url_png,codes.alpha_3,tlds,currencies,languages,borders"
 
 function transform(obj: any): CountryDetail {
+  console.log('languages shape:', JSON.stringify(obj.languages))
   return {
     name: {
       common: obj.names?.common,
@@ -47,21 +48,30 @@ async function getCountry(name: string): Promise<CountryDetail> {
   return transform(obj)
 }
 
+const borderCache = new Map<string, string>()
+
 async function getBorderCountryNames(codes: string[]): Promise<string[]> {
   if (!codes || codes.length === 0) return []
   const API_KEY = process.env.REST_COUNTRIES_API_KEY
 
-  const results = await Promise.all(
-    codes.map(code =>
-      fetch(`${BASE}/codes.alpha_3/${code}?response_fields=names.common`, {
-        headers: { "Authorization": `Bearer ${API_KEY}` }
-      }).then(res => res.json())
-    )
-  )
+  const uncached = codes.filter(code => !borderCache.has(code))
 
-  return results
-    .map(r => r.data?.objects?.[0]?.["names.common"] ?? r.data?.objects?.[0]?.names?.common)
-    .filter(Boolean)
+  if (uncached.length > 0) {
+    const results = await Promise.all(
+      uncached.map(code =>
+        fetch(`${BASE}/codes.alpha_3/${code}?response_fields=names.common`, {
+          headers: { "Authorization": `Bearer ${API_KEY}` }
+        }).then(res => res.json())
+      )
+    )
+
+    uncached.forEach((code, i) => {
+      const name = results[i].data?.objects?.[0]?.["names.common"] ?? results[i].data?.objects?.[0]?.names?.common
+      if (name) borderCache.set(code, name)
+    })
+  }
+
+  return codes.map(code => borderCache.get(code)).filter(Boolean) as string[]
 }
 
 export default async function CountryPage({
