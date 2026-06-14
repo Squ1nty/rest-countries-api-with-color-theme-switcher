@@ -26,7 +26,7 @@ export interface CountryDetail extends Country {
   subregion?: string
   tld?: string[]
   currencies?: Record<string, { name: string }>
-  languages?: Record<string, string>
+  languages?: { name: string; native_name?: string; bcp47?: string }[]
   borders?: string[]
 }
 

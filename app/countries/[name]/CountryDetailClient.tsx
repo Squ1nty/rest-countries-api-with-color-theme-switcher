@@ -20,7 +20,8 @@ export default function CountryDetailClient({ country, borderNames }: Props) {
 
   const nativeName = Object.values(country.name.nativeName ?? {})[0]?.common ?? 'N/A'
   const currencies = Object.values(country.currencies ?? {}).map(c => c.name).join(', ') || 'N/A'
-  const languages = Object.values(country.languages ?? {}).join(', ') || 'N/A'
+  const languages = (country.languages ?? []).map((l: any) => l.name).join(', ') || 'N/A'
+  console.log((country.languages ?? []).map((l: any) => l.name).join(', ') || 'N/A');
   const tld = country.tld?.[0] ?? 'N/A'
 
   const handleBack = () => {
